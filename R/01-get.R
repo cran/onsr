@@ -26,7 +26,7 @@
 #'
 #' @param ...
 #'
-#' Further arguments passed on the reading functions.
+#' Further arguments passed on the methods.
 #'
 #'
 #'
@@ -41,7 +41,7 @@
 #' ons_get(id = "cpih01", version = "5")
 #'}
 ons_get <- function(id = NULL, edition = NULL, version = NULL, ons_read = getOption("onsr.read"), ...) {
-  assert_get_id(id)
+  assert_get_id(id, ...)
   req <- build_request(id, edition, version)
   res <- make_request(req)
   res %||% return(invisible(NULL))
@@ -123,12 +123,13 @@ build_request_obs <- function(id, ...) {
 #' @name ons_extra
 #' @export
 #' @examples
+#' \dontrun{
 #' ons_dim(id = "cpih01")
 #'
 #' ons_dim_opts(id = "cpih01", dimension = "time")
 #'
 #' ons_meta(id = "cpih01")
-#'
+#'}
 ons_dim <- function(id = NULL, edition = NULL, version = NULL) {
   assert_valid_id(id)
   req <- build_request(id, edition, version)
