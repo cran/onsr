@@ -45,9 +45,14 @@ extend_request_dots <- function(pre, ...) {
 # Make Request ------------------------------------------------------------
 
 
+USER_AGENT = "onsr (https://github.com/kvasilopoulos/onsr)"
+
+
+#' @importFrom httr GET RETRY write_disk timeout
 try_VERB <- function(x, limit, offset, VERB = "GET", ...) {
   tryCatch(
     RETRY(VERB, url = x, timeout(10), quiet = TRUE,
+          config = httr::config(useragent = USER_AGENT),
           query = list(limit = limit, offset = offset), ...),
     error = function(err) conditionMessage(err),
     warning = function(warn) conditionMessage(warn)
@@ -60,11 +65,12 @@ is_response <- function(x) {
 
 
 
+
 #' @importFrom httr GET RETRY write_disk timeout
 make_request <- function(query, limit = NULL, offset = NULL, ...) {
 
   if (!curl::has_internet()) {
-    message("No internet connection.")
+    message("Unable to connect: Please ensure you have an active internet connection or access through a secure connection.")
     return(invisible(NULL))
   }
   resp <- try_VERB(query, limit = limit, offset = offset, ...)

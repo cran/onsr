@@ -1,3 +1,5 @@
+skip_on_cran()
+
 test_that("spec id", {
 
   expect_error(ons_codelists(), NA)
